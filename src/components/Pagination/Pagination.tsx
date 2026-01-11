@@ -16,10 +16,9 @@ export const Pagination: React.FC<Props> = ({
 }) => {
   const countPages = Math.ceil(total / perPage);
   const pages = Array.from({ length: countPages }, (_, ind) => ind + 1);
-  const maxCountPage = Math.ceil(total / perPage);
 
   const isPrevDisabled = currentPage === 1;
-  const isNextDisabled = currentPage === maxCountPage;
+  const isNextDisabled = currentPage === countPages;
 
   return (
     <ul className="pagination">
@@ -28,7 +27,7 @@ export const Pagination: React.FC<Props> = ({
           data-cy="prevLink"
           className="page-link"
           href="#prev"
-          aria-disabled={isPrevDisabled ? true : false}
+          aria-disabled={isPrevDisabled}
           onClick={() => {
             if (!isPrevDisabled) {
               onPageChange(currentPage - 1);
@@ -39,9 +38,9 @@ export const Pagination: React.FC<Props> = ({
         </a>
       </li>
 
-      {pages.map((pageNumber, index) => (
+      {pages.map(pageNumber => (
         <li
-          key={index}
+          key={pageNumber}
           className={
             currentPage === pageNumber ? 'page-item active' : 'page-item'
           }
@@ -50,7 +49,11 @@ export const Pagination: React.FC<Props> = ({
             data-cy="pageLink"
             className="page-link"
             href={`#${pageNumber}`}
-            onClick={() => onPageChange(pageNumber)}
+            onClick={() => {
+              if (currentPage !== pageNumber) {
+                onPageChange(pageNumber);
+              }
+            }}
           >
             {pageNumber}
           </a>
@@ -59,14 +62,14 @@ export const Pagination: React.FC<Props> = ({
 
       <li
         className={
-          currentPage === maxCountPage ? 'page-item disabled' : 'page-item'
+          currentPage === countPages ? 'page-item disabled' : 'page-item'
         }
       >
         <a
           data-cy="nextLink"
           className="page-link"
           href="#next"
-          aria-disabled={isNextDisabled ? true : false}
+          aria-disabled={isNextDisabled}
           onClick={() => {
             if (!isNextDisabled) {
               onPageChange(currentPage + 1);

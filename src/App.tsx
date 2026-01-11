@@ -33,16 +33,18 @@ export const App: React.FC = () => {
           <select
             data-cy="perPageSelector"
             id="perPageSelector"
+            defaultValue={perPage}
             className="form-control"
             onChange={event => {
               setCurrentPage(1);
               setPerPage(toPerPage(event.target.value));
             }}
           >
-            <option value="3">3</option>
-            <option value="5" selected>5</option>
-            <option value="10">10</option>
-            <option value="20">20</option>
+            {[3, 5, 10, 20].map(count => (
+              <option key={count} value={`${count}`}>
+                {count}
+              </option>
+            ))}
           </select>
         </div>
 
